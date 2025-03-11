@@ -1,9 +1,9 @@
-use async_trait::async_trait;
-use tokio::sync::oneshot;
 use crate::channel::ProcessApplier;
 use crate::errors::ProcessDropped;
 use crate::handler::EventApplicator;
 use crate::markers::{Aggregate, Event};
+use async_trait::async_trait;
+use tokio::sync::oneshot;
 
 pub struct EventReceptor<E: Event> {
     pub(crate) event: E,
@@ -13,7 +13,7 @@ pub struct EventReceptor<E: Event> {
 #[async_trait]
 impl<E: Event, T: Aggregate> ProcessApplier<T> for EventReceptor<E>
 where
-    T: EventApplicator<E>
+    T: EventApplicator<E>,
 {
     async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ProcessDropped> {
         self.oneshot

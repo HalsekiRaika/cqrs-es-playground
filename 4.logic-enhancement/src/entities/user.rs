@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod id;
 mod name;
 
@@ -61,7 +63,7 @@ impl User {
 impl CommandHandler<UserCommand> for User {
     type Event = UserEvent;
     type Rejection = Report<CommandRejected>;
-    
+
     #[tracing::instrument(skip_all, fields(id = %self.id))]
     async fn handle(&self, command: UserCommand) -> Result<Self::Event, Self::Rejection> {
         let ev = match command {
@@ -86,9 +88,9 @@ impl EventApplicator<UserEvent> for User {
         // ここで保存を行う。
         // これにより、集約単位でのトランザクションを確保することが実現する
         // eventstore.persist(&event).await?;
-        
+
         tracing::debug!("Accept event: {:?}", event);
-        
+
         match event {
             UserEvent::Created { .. } => {
                 // Do nothing
@@ -97,7 +99,7 @@ impl EventApplicator<UserEvent> for User {
                 self.name = name;
             }
         }
-        
+
         tracing::debug!("current state: {:?}", self);
     }
 }

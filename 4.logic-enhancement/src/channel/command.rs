@@ -1,9 +1,9 @@
-use async_trait::async_trait;
-use tokio::sync::oneshot;
 use crate::channel::ProcessApplier;
 use crate::errors::ProcessDropped;
 use crate::handler::CommandHandler;
 use crate::markers::{Aggregate, Command};
+use async_trait::async_trait;
+use tokio::sync::oneshot;
 
 pub struct CommandReceptor<C: Command, T: Aggregate>
 where
@@ -14,7 +14,7 @@ where
 }
 
 #[async_trait]
-impl<C: Command, T: Aggregate> ProcessApplier<T> for CommandReceptor<C, T> 
+impl<C: Command, T: Aggregate> ProcessApplier<T> for CommandReceptor<C, T>
 where
     T: CommandHandler<C>,
 {

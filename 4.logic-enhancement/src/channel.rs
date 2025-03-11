@@ -2,8 +2,8 @@ mod command;
 mod event;
 mod forget;
 
-use std::fmt::Debug;
 use async_trait::async_trait;
+use std::fmt::Debug;
 use tokio::sync::mpsc::UnboundedSender;
 
 use crate::channel::command::CommandReceptor;
@@ -19,7 +19,7 @@ pub trait ProcessApplier<T: Aggregate>: 'static + Sync + Send {
 }
 
 pub struct Receptor<T: Aggregate> {
-    channel: UnboundedSender<Box<dyn ProcessApplier<T>>>
+    channel: UnboundedSender<Box<dyn ProcessApplier<T>>>,
 }
 
 impl<T: Aggregate> Receptor<T> {
@@ -29,9 +29,9 @@ impl<T: Aggregate> Receptor<T> {
 }
 
 impl<T: Aggregate> Receptor<T> {
-    pub async fn handle<C: Command>(&self, command: C) -> Result<T::Event, T::Rejection> 
-    where 
-        T: CommandHandler<C>
+    pub async fn handle<C: Command>(&self, command: C) -> Result<T::Event, T::Rejection>
+    where
+        T: CommandHandler<C>,
     {
         let (tx, rx) = tokio::sync::oneshot::channel();
         self.channel
@@ -40,34 +40,29 @@ impl<T: Aggregate> Receptor<T> {
                 oneshot: tx,
             }))
             .unwrap();
-        
+
         rx.await.unwrap()
     }
-    
-    pub async fn apply<E: Event>(&self, event: E) 
+
+    pub async fn apply<E: Event>(&self, event: E)
     where
-        T: EventApplicator<E>
+        T: EventApplicator<E>,
     {
         let (tx, rx) = tokio::sync::oneshot::channel();
         self.channel
-            .send(Box::new(EventReceptor {
-                event,
-                oneshot: tx,
-            })).unwrap();
-        
+            .send(Box::new(EventReceptor { event, oneshot: tx }))
+            .unwrap();
+
         rx.await.unwrap()
     }
-    
-    pub async fn entrust<C: Command>(&self, command: C) 
+
+    pub async fn entrust<C: Command>(&self, command: C)
     where
-        T: CommandHandler<C>
-        + EventApplicator<T::Event>,
-        T::Rejection: Debug
+        T: CommandHandler<C> + EventApplicator<T::Event>,
+        T::Rejection: Debug,
     {
         self.channel
-            .send(Box::new(NonblockingReceptor {
-                command
-            }))
+            .send(Box::new(NonblockingReceptor { command }))
             .unwrap();
     }
 }

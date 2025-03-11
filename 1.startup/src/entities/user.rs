@@ -61,9 +61,9 @@ impl User {
                 UserEvent::ChangedName { id: self.id, name }
             }
         };
-        
+
         tracing::debug!("Accepted command. published event: {:?}", ev);
-        
+
         Ok(ev)
     }
 

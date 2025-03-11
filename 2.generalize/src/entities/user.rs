@@ -61,7 +61,7 @@ impl User {
 impl CommandHandler<UserCommand> for User {
     type Event = UserEvent;
     type Rejection = Report<CommandRejected>;
-    
+
     #[tracing::instrument(skip_all, fields(id = %self.id))]
     async fn handle(&self, command: UserCommand) -> Result<Self::Event, Self::Rejection> {
         let ev = match command {
@@ -74,9 +74,9 @@ impl CommandHandler<UserCommand> for User {
                 UserEvent::ChangedName { id: self.id, name }
             }
         };
-        
+
         tracing::debug!("Accepted command. published event: {:?}", ev);
-        
+
         Ok(ev)
     }
 }
@@ -86,7 +86,7 @@ impl EventApplicator<UserEvent> for User {
     #[tracing::instrument(skip_all, fields(id = %self.id))]
     async fn apply(&mut self, event: UserEvent) {
         tracing::debug!("Accept event: {:?}", event);
-        
+
         match event {
             UserEvent::Created { .. } => {
                 // Do nothing
@@ -95,7 +95,7 @@ impl EventApplicator<UserEvent> for User {
                 self.name = name;
             }
         }
-        
+
         tracing::debug!("current state: {:?}", self);
     }
 }
