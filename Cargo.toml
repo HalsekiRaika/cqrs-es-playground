@@ -1,0 +1,22 @@
+[workspace]
+members = [
+  "1.startup",
+  "2.generalize",
+  "3.separate-into-thread",
+  "4.logic-enhancement",
+]
+
+resolver = "3"
+
+[workspace.dependencies]
+tokio = { version = "^1", default-features = false }
+
+tracing = "^0.1"
+tracing-subscriber = { version = "^0.3", features = ["env-filter"] }
+
+thiserror = "^2"
+async-trait = "^0.1"
+error-stack = "^0.5"
+
+uuid = { version = "^1", features = ["serde", "v4"] }
+serde = { version = "^1", features = ["derive"] }

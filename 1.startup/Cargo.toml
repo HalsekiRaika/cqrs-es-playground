@@ -1,0 +1,16 @@
+[package]
+name = "startup"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+thiserror = { workspace = true }
+error-stack = { workspace = true }
+
+uuid = { workspace = true }
+serde = { workspace = true }

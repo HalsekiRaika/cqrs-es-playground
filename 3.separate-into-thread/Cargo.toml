@@ -1,0 +1,17 @@
+[package]
+name = "separate-into-thread"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "sync"] }
+
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+thiserror = { workspace = true }
+error-stack = { workspace = true }
+async-trait = { workspace = true }
+
+uuid = { workspace = true }
+serde = { workspace = true }
