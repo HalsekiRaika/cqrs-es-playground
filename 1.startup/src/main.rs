@@ -9,6 +9,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 use crate::entities::user::{User, UserCommand};
 use crate::errors::UnrecoverableError;
 
+#[rustfmt::skip]
 #[tokio::main]
 async fn main() -> Result<(), Report<UnrecoverableError>> {
     tracing_subscriber::registry()
@@ -20,7 +21,11 @@ async fn main() -> Result<(), Report<UnrecoverableError>> {
         name: "Test User 1".to_string(),
     };
 
-    let mut user = User::create(input.clone()).change_context_lazy(|| UnrecoverableError)?;
+    let mut user = User::create(input.clone())
+        .change_context_lazy(|| UnrecoverableError)?;
+    
+    // 生成以外にイベントのリプレイを行うなら
+    // let mut user = EventProjector::projection_to_latest::<User>().await;
 
     let event = user
         .handle(input)
