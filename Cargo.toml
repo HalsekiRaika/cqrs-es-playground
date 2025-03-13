@@ -4,6 +4,7 @@ members = [
   "2.generalize",
   "3.separate-into-thread",
   "4.logic-enhancement",
+  "5.impl-eventstore",
 ]
 
 resolver = "3"
@@ -20,3 +21,7 @@ error-stack = "^0.5"
 
 uuid = { version = "^1", features = ["serde", "v4"] }
 serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
+
+time = { version = "^0.3", features = ["serde"] }
+sqlx = { version = "^0.8", features = ["migrate", "sqlite", "runtime-tokio", "uuid", "time"] }
