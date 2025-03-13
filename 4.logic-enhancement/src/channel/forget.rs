@@ -1,5 +1,5 @@
 use crate::channel::ProcessApplier;
-use crate::errors::ProcessDropped;
+use crate::errors::ChannelDropped;
 use crate::handler::{CommandHandler, EventApplicator};
 use crate::markers::{Aggregate, Command};
 use async_trait::async_trait;
@@ -15,7 +15,7 @@ where
     T: CommandHandler<C> + EventApplicator<T::Event>,
     T::Rejection: Debug,
 {
-    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ProcessDropped> {
+    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ChannelDropped> {
         match entity.handle(self.command).await {
             Ok(ev) => entity.apply(ev).await,
             Err(e) => {

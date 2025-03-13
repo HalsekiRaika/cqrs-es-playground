@@ -9,13 +9,13 @@ use tokio::sync::mpsc::UnboundedSender;
 use crate::channel::command::CommandReceptor;
 use crate::channel::event::EventReceptor;
 use crate::channel::forget::NonblockingReceptor;
-use crate::errors::ProcessDropped;
+use crate::errors::ChannelDropped;
 use crate::handler::{CommandHandler, EventApplicator};
 use crate::markers::{Aggregate, Command, Event};
 
 #[async_trait]
 pub trait ProcessApplier<T: Aggregate>: 'static + Sync + Send {
-    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ProcessDropped>;
+    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ChannelDropped>;
 }
 
 pub struct Receptor<T: Aggregate> {

@@ -1,5 +1,5 @@
 use crate::channel::ProcessApplier;
-use crate::errors::ProcessDropped;
+use crate::errors::ChannelDropped;
 use crate::handler::CommandHandler;
 use crate::markers::{Aggregate, Command};
 use async_trait::async_trait;
@@ -18,9 +18,9 @@ impl<C: Command, T: Aggregate> ProcessApplier<T> for CommandReceptor<C, T>
 where
     T: CommandHandler<C>,
 {
-    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ProcessDropped> {
+    async fn apply(self: Box<Self>, entity: &mut T) -> Result<(), ChannelDropped> {
         self.oneshot
             .send(entity.handle(self.command).await)
-            .map_err(|_| ProcessDropped)
+            .map_err(|_| ChannelDropped)
     }
 }

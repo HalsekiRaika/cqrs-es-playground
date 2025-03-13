@@ -8,4 +8,4 @@ pub struct CommandRejected;
 
 #[derive(Debug, thiserror::Error)]
 #[error("sending into a closed channel")]
-pub struct ProcessDropped;
+pub struct ChannelDropped;
