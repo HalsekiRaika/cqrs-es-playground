@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use crate::errors::{DeserializeError, SerializeError};
 use crate::identifier::EntityId;
 

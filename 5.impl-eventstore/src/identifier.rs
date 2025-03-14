@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use std::fmt::{Debug, Display, Formatter};
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;

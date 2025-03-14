@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 pub mod sqlite;
 
 use crate::errors::{DeserializeError, ReadError, WriteError};
